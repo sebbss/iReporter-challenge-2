@@ -57,6 +57,35 @@ def delete(flag_id):
 		return jsonify({'message':'the flag your trying to delete doesnot exist'}), 400
 
 
+"""Update a red-flag"""
+
+
+@app.route("/ireporter/api/v1/flags/<int:flag_id>/description",endpoint = 'description', methods = ['PATCH'])
+@app.route("/ireporter/api/v1/flags/<int:flag_id>/location",endpoint = 'location', methods = ['PATCH'])
+def update(flag_id):
+	flag_data = request.get_json()
+	flag = red_flag.get_flag_by_id(flag_id)
+	if flag and flag['status']=='none':
+		if request.endpoint == 'description':
+			flag.update(description=flag_data['description'])
+			message = {
+				'status': 200,
+        		'data': [
+            	{	'id':flag['_id'],
+            	    'message':'udated red-flag record description'
+            	}]
+			}
+		else:
+			flag.update(location=flag_data['location'])
+			message = {
+				'status': 200,
+        		'data': [
+            	{	'id':flag['_id'],
+            	    'message':'udated red-flag record location'
+            	}]
+			}
+		return jsonify(message)
+	return jsonify({'message':'the red-flag either doesnot exist or cannot be edited'})
 
 
 
