@@ -30,3 +30,12 @@ def get_allFlags():
 	return jsonify({'status':200 ,'flags':response}), 200
 
 
+"""get a specific red-flag"""
+
+
+@app.route("/ireporter/api/v1/flags/<int:flag_id>")
+def get_aRedflag(flag_id):
+	flag = red_flag.get_flag_by_id(flag_id)
+	if flag:
+		return jsonify(flag)
+	return jsonify({'message':'flag with that id doesnot exist'})

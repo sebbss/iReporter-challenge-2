@@ -38,4 +38,12 @@ class TestRoutes(TestCase):
 			response = cli.get('ireporter/api/v1/flags')
 			self.assertEqual(response.status_code, 200)
 
-	
+	def test_getAredFlag(self):
+		with self.test_app as cli:
+			post = cli.post('ireporter/api/v1/flag',content_type="application/json",data=json.dumps(self.flag_data))
+			response = cli.get("/ireporter/api/v1/flags/1")
+			self.assertIsNotNone(response)
+			self.assertIn('red-flag',str(response.data))
+
+
+
