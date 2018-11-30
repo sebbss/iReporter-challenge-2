@@ -45,3 +45,12 @@ class TestRoutes(TestCase):
 			self.assertIsNotNone(response)
 			self.assertIn('red-flag',str(response.data))
 			self.assertIn('james', str(response.data))
+
+
+	def test_deleteRedflag(self):
+		with self.test_app as cli:
+			post = cli.post('ireporter/api/v1/flag',content_type="application/json",data=json.dumps(self.flag_data2))
+			print(cli.get('ireporter/api/v1/flags'))
+			resp = cli.delete("/ireporter/api/v1/flags/2")
+			self.assertEqual(resp.status_code, 202)
+
