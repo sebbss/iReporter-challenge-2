@@ -44,6 +44,4 @@ class TestRoutes(TestCase):
 			response = cli.get("/ireporter/api/v1/flags/1")
 			self.assertIsNotNone(response)
 			self.assertIn('red-flag',str(response.data))
-
-
-
+			self.assertIn('james', str(response.data))
