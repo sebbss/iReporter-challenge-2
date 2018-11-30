@@ -39,3 +39,26 @@ def get_aRedflag(flag_id):
 	if flag:
 		return jsonify(flag)
 	return jsonify({'message':'flag with that id doesnot exist'})
+
+"""delete a red-flag"""
+
+@app.route("/ireporter/api/v1/flags/<int:flag_id>", methods = ['DELETE'])
+def delete(flag_id):
+	flag = red_flag.get_flag_by_id(flag_id)
+	if flag:
+		red_flag.flags = red_flag.delete_flag(flag_id)
+		return jsonify({
+				'status': 202,
+        		'data': [
+            	{	'id':flag['_id'],
+            	    'message':'red-flag record has been deleted'
+            	}]
+			}), 202
+		return jsonify({'message':'the flag your trying to delete doesnot exist'}), 400
+
+
+
+
+
+
+

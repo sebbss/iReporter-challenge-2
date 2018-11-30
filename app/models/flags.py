@@ -32,5 +32,8 @@ class Flag:
 			if flag['_id'] == _id:
 				return flag
 
+	def delete_flag(self, _id):
+		self.flags = list(filter(lambda x: x['_id'] != _id , self.flags))
+		return self.flags
 
 	
