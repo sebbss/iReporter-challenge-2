@@ -18,7 +18,6 @@ pyparted==3.11.1
 python-apt==1.6.0
 python-xlib==0.20
 pytz==2018.7
-pytest-cov
 pyxdg==0.25
 setproctitle==1.1.10
 six==1.11.0
