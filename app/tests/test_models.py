@@ -26,6 +26,10 @@ class TestModel(TestCase):
 		self.assertIn('video',str(resp))
 		self.assertIn('image',str(resp))
 		self.assertIn('none',str(resp))
+		self.assertEqual(resp['_id'], 1)
+
+
+
 
 
 		
