@@ -38,31 +38,4 @@ class TestRoutes(TestCase):
 			response = cli.get('ireporter/api/v1/flags')
 			self.assertEqual(response.status_code, 200)
 
-	def test_getAredFlag(self):
-		with self.test_app as cli:
-			post = cli.post('ireporter/api/v1/flag',content_type="application/json",data=json.dumps(self.flag_data))
-			response = cli.get("/ireporter/api/v1/flags/1")
-			self.assertIsNotNone(response)
-			self.assertIn('red-flag',str(response.data))
-
-
-	def test_deleteRedflag(self):
-		with self.test_app as cli:
-			post = cli.post('ireporter/api/v1/flag',content_type="application/json",data=json.dumps(self.flag_data2))
-			print(cli.get('ireporter/api/v1/flags'))
-			resp = cli.delete("/ireporter/api/v1/flags/2")
-			self.assertEqual(resp.status_code, 202)
-
-	def test_updateRedflag(self):
-		post_data = self.test_app.post('ireporter/api/v1/flag',content_type="application/json",data=json.dumps(self.flag_data2))
-		post = self.test_app.patch("/ireporter/api/v1/flags/3/description",data=json.dumps({"description":"misuse of funds"}))
-		update_data = self.test_app.get("/ireporter/api/v1/flags/3")
-		resp = json.loads(update_data.data)
-		print (resp)
-		self.assertEqual(resp['description'],'misuse of funds')
-
-
-
-
-
-
+	

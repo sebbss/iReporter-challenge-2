@@ -27,13 +27,5 @@ class Flag:
 	def get_flags(self):
 		return self.flags
 	
-	def get_flag_by_id(self, _id):
-		for flag in self.flags:
-			if flag['_id'] == _id:
-				return flag
-
-	def delete_flag(self, _id):
-		self.flags = list(filter(lambda x: x['_id'] != _id , self.flags))
-		return self.flags
 
 	
