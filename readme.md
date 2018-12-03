@@ -1,0 +1,2 @@
+[![Build Status](https://travis-ci.org/sebbss/iReporter-challenge-2.svg?branch=develop)](https://travis-ci.org/sebbss/iReporter-challenge-2)
+[![Coverage Status](https://coveralls.io/repos/github/sebbss/iReporter-challenge-2/badge.svg?branch=coveralls)](https://coveralls.io/github/sebbss/iReporter-challenge-2?branch=coveralls)
