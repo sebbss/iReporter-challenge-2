@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from app.models.flags import Flag
 from app.app import app
+from app.utils.validators import validate_flag
 red_flag = Flag()
 
 """create a red flag"""
@@ -9,6 +10,9 @@ red_flag = Flag()
 @app.route("/ireporter/api/v1/flag", methods=['POST'])
 def createFlag():
     flag_data = request.get_json()
+    res = validate_flag(**flag_data)
+    if res:
+    	return res
     new_flag = red_flag.create_redflag(flag_data)
     return jsonify({
         'status': 201,

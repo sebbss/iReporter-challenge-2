@@ -1,14 +1,13 @@
 from flask import jsonify
 
-def validate_flag(createdBy, location, description, flag_type, status, video, image):
+def validate_flag(**flag_data):
 	#check empty feilds
-	if not createdBy or not location or not description or not flag_type:
-		return jsonify({'error message':'createdBy, location and description is required'})
+	for value in flag_data.values():
+		if value == "":
+			return jsonify({'error message':'createdBy, location, description, status,video and image is required'})
 
 	#check for valid feilds
-	if not isinstance(status, str) or not isinstance(flag_type str):
-		return jsonify({'error message':'status and flag_type have to be strings'})
-		
+	# if not isinstance(flag_data['status'], str) or not isinstance(flag_data['flag_type'], str) or not isinstance(flag_data['location'], str):
+	# 	return jsonify({'error message':'status and flag_type have to be strings'})
 
-
-
+	return None 
