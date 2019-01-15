@@ -26,12 +26,12 @@ to run the automated tests
 
 ## Features
 Users can perform the following tasks
-	1. get all red-flags
-	2. create a red-flag
-	3. get a specific red-flag
-	4. update the location of a red-flag
-	5. update the description of a red-flag
-	6. delete a specific red-flag
+	- get all red-flags
+	- create a red-flag
+	- get a specific red-flag
+	- update the location of a red-flag
+	- update the description of a red-flag
+	- delete a specific red-flag
 
 ## Endpoints
 |HTTP Method | End point | Action|
