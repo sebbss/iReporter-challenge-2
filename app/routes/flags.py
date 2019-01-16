@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from app.models.flags import Flag
 from app.app import app
+from app.utils.validators import validate_flag
 red_flag = Flag()
 
 """create a red flag"""
@@ -9,6 +10,9 @@ red_flag = Flag()
 @app.route("/ireporter/api/v1/flag", methods=['POST'])
 def createFlag():
     flag_data = request.get_json()
+    res = validate_flag(**flag_data)
+    if res:
+    	return res
     new_flag = red_flag.create_redflag(flag_data)
     return jsonify({
         'status': 201,
@@ -54,7 +58,7 @@ def delete(flag_id):
             	    'message':'red-flag record has been deleted'
             	}]
 			}), 202
-		return jsonify({'message':'the flag your trying to delete doesnot exist'}), 400
+	return jsonify({'message':'the flag your trying to delete doesnot exist'}), 400
 
 
 """Update a red-flag"""
@@ -88,6 +92,21 @@ def update(flag_id):
 	return jsonify({'message':'the red-flag either doesnot exist or cannot be edited'})
 
 
+"""heroku webpage"""
 
+ireporter = '''<!DOCTYPE html>
+				<html lang="en">
+					<head>
+						<meta charset="UTF-8">
+						<title>iReporter</title>
+					</head>
+					<body>
+						<h1>iReporter</h1>
+						<p><a href="https://joseph-api.herokuapp.com/ireporter/api/v1/flags">get all red-flags</a></p>
+					</body>
+				</html>'''
+@app.route('/')
+def index():
+    return ireporter
 
 
