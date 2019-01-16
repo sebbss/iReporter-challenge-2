@@ -58,7 +58,7 @@ def delete(flag_id):
             	    'message':'red-flag record has been deleted'
             	}]
 			}), 202
-		return jsonify({'message':'the flag your trying to delete doesnot exist'}), 400
+	return jsonify({'message':'the flag your trying to delete doesnot exist'}), 400
 
 
 """Update a red-flag"""
