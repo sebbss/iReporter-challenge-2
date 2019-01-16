@@ -17,6 +17,7 @@ class User:
 				'username':userdata['username'],
 				'isAdmin':userdata['isAdmin'],
 				'password':userdata['password']
+				'confirm password':userdata['confirm password']
 		}
 		self.users.append(new_user)
 		return new_user

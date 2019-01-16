@@ -11,3 +11,4 @@ def create_user():
 	userdata = request.get_json()
 	new_user = user.register_user(userdata)
 	return jsonify({'message':'you have been successfully registered'})
+
