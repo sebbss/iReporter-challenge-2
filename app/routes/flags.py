@@ -92,6 +92,21 @@ def update(flag_id):
 	return jsonify({'message':'the red-flag either doesnot exist or cannot be edited'})
 
 
+"""heroku webpage"""
 
+ireporter = '''<!DOCTYPE html>
+				<html lang="en">
+					<head>
+						<meta charset="UTF-8">
+						<title>iReporter</title>
+					</head>
+					<body>
+						<h1>iReporter</h1>
+						<p><a href="https://joseph-api.herokuapp.com/ireporter/api/v1/flags">get all red-flags</a></p>
+					</body>
+				</html>'''
+@app.route('/')
+def index():
+    return ireporter
 
 
