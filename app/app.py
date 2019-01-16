@@ -15,6 +15,6 @@ ireporter = '''<!DOCTYPE html>
 						<a href="https://joseph-api.herokuapp.com/ireporter/api/v1/flags"></a>
 					</body>
 				</html>'''
-app.route('/')
+@app.route('/')
 def home():
     return ireporter
