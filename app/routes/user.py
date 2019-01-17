@@ -22,8 +22,10 @@ def create_user():
 @app.route("/login", methods = ['POST'])
 def login():
 	data = request.get_json()
-	
-	user = LoginUser(username=data['username'], password=data['password'])
-	identify = LoginUser.login()
-	access_token = create_access_token(identity=identify)
-	return jsonify({'access-token': access_token}), 200
+	for u in users:
+		if data['username']==u['username'] and data['password']==u['password']:
+			user = LoginUser(username=data['username'], password=data['password'])
+			identify = user.login()
+			access_token = create_access_token(identity=identify)
+			return jsonify({'access-token': access_token}), 200
+		return jsonify({'message':'invalid credentials'}),401

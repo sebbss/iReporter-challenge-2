@@ -36,11 +36,10 @@ class LoginUser:
 	def __init__(self, username, password):
 		self.password = password
 		self.username = username
-
-	def login():
+	def login(self):
 		for user in users:
 			if user['username'] == self.username and user['password'] == self.password:
-				return user['user_id']
+				return user['username']
 
 
 
