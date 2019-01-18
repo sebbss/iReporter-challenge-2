@@ -13,13 +13,13 @@ class Flag:
 		new_flag = {
 				'_id': self.idcounter,
 				'createdOn': self.createdOn,
-				'flag_type': flag_data['flag_type'],
+				'flag_type': 'red_flag',
 				'createdBy': flag_data['createdBy'],
 				'location': flag_data['location'],
 				'description': flag_data['description'],
 				'image': flag_data['image'],
 				'video': flag_data['video'],
-				'status':flag_data['status']
+				'status':'none'
 		}
 		self.flags.append(new_flag)
 		return new_flag

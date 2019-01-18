@@ -2,6 +2,7 @@ from flask import request, jsonify
 from app.models.flags import Flag
 from app.app import app
 from app.utils.validators import validate_flag
+from flask_jwt_extended import jwt_required
 red_flag = Flag()
 
 """create a red flag"""
@@ -9,6 +10,7 @@ red_flag = Flag()
 
 @app.route("/ireporter/api/v1/flag", methods=['POST'])
 def createFlag():
+	
     flag_data = request.get_json()
     res = validate_flag(**flag_data)
     if res:
@@ -26,7 +28,6 @@ def createFlag():
 
 """get all red-flags"""
 
-
 @app.route("/ireporter/api/v1/flags")
 def get_allFlags():
 	response = red_flag.get_flags()
@@ -36,7 +37,7 @@ def get_allFlags():
 
 """get a specific red-flag"""
 
-
+@jwt_required
 @app.route("/ireporter/api/v1/flags/<int:flag_id>")
 def get_aRedflag(flag_id):
 	flag = red_flag.get_flag_by_id(flag_id)

@@ -1,13 +1,22 @@
 from flask import jsonify
-
 def validate_flag(**flag_data):
 	#check empty feilds
 	for value in flag_data.values():
 		if value == "":
-			return jsonify({'error message':'createdBy, location, description, status,video and image is required'})
+			return jsonify({'error message':'createdBy, location, description,video and image is required'})
 
-	#check for valid feilds
-	# if not isinstance(flag_data['status'], str) or not isinstance(flag_data['flag_type'], str) or not isinstance(flag_data['location'], str):
-	# 	return jsonify({'error message':'status and flag_type have to be strings'})
+
 
 	return None 
+
+def string_validator(string_param):
+    special_characters ='$#@%&*!'
+    special_character = 0
+    for character in string_param:
+       
+        if special_characters.find(character) != -1:
+            special_character +=1
+
+    if special_character >= 1:
+        return "special character exists"
+    
