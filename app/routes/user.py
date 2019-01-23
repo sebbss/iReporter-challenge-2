@@ -1,10 +1,12 @@
 from flask import request, jsonify
-from app.models.user import User, users, LoginUser
+from app.models.user import User, LoginUser
 from app.app import app
-from flask_jwt_extended import create_access_token
 from validate_email import validate_email
-from app.utils.validators import string_validator
+from app.utils.validators import validate_user_strings 
+from app.utils.helpers import encode_token
+from app.models.db import Database
 
+db = Database()
 
 """Register user"""
 
@@ -15,16 +17,25 @@ def create_user():
     valid_email = validate_email(data['email'])
     if not valid_email:
         return jsonify({'message': 'email is invalid'}), 400
+    invalid_data = validate_user_strings(data['firstname'],data['lastname'],data['username'],data['phoneNumber'])
+    if invalid_data:
+        return invalid_data
 
-    for u in users:
-        if data['username'] == u['username']:
-            return jsonify({'message': 'username already exists'}), 400
+    new_user = User(firstname=data['firstname'], lastname=data['lastname'], 
+                    phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,isAdmin=data['isAdmin'], password=data['password'])
 
-    new_user = User(firstname=data['firstname'], lastname=data['lastname'], email=data['email'],
-                    phoneNumber=data['phoneNumber'], username=data['username'], isAdmin=data['isAdmin'], password=data['password'])
-    new_user.registerUser()
-    return jsonify({'message': 'you have been successfully registered'}), 201
+    reg = new_user.registerUser()
 
+    identity = {'username':data['username'],'user_id':reg[0],'isAdmin':data['isAdmin']}
+    access_token = encode_token(identity)
+    return jsonify({
+        'status': 201,
+        'data': [
+                {
+                'token': access_token.decode('utf-8'),
+                'user':identity
+                }]
+            }), 201
 
 '''login user'''
 
@@ -32,11 +43,18 @@ def create_user():
 @app.route("/login", methods=['POST'])
 def login():
     data = request.get_json()
-    for u in users:
-        if data['username'] == u['username'] and data['password'] == u['password']:
-            user = LoginUser(
-                username=data['username'], password=data['password'])
-            identify = user.login()
-            access_token = create_access_token(identity=identify)
-            return jsonify({'access-token': access_token}), 200
-        return jsonify({'message': 'invalid credentials'}), 401
+    username = data.get("username")
+    password = data.get("password")
+    user = LoginUser(username, password)
+    identity = user.login()
+    if identity:
+        access_token = encode_token(identity)
+        return jsonify({
+        'status': 200,
+        'data': [
+                {
+                'token': access_token.decode('utf-8'),
+                'user':identity
+                }]
+            }), 200
+    return jsonify({'message': 'invalid credentials'}), 401

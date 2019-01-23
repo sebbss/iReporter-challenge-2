@@ -1,45 +1,52 @@
 from datetime import datetime
-users = []
+from .db import Database
+from flask import jsonify
 
 class User:
-	def __init__(self, firstname, lastname, email, phoneNumber, username, isAdmin, password):
-		self._id = 2000
+	def __init__(self, firstname, lastname, phoneNumber,email, username, isAdmin, password):
+		self.db = Database()
+		
 		self.firstname = firstname
 		self.lastname = lastname
-		self.email = email
 		self.phoneNumber = phoneNumber
 		self.username = username 
 		self.isAdmin = isAdmin
+		self.email = email
 		self.password =password
 
 
 
 	def registerUser(self):
-		self._id = self._id+1
-		self.registered = str(datetime.utcnow())
-		new_user = {
-				'id':self._id,
-				'registered':self.registered,
-				'firstname':self.firstname,
-				'lastname':self.lastname,
-				'email':self.email,
-				'phoneNumber':self.phoneNumber,
-				'username':self.username,
-				'isAdmin':self.isAdmin,
-				'password':self.password
-					}
-		users.append(new_user)
-		return new_user
+		query = "INSERT INTO users (username, password, isAdmin,email,firstname, lastname, phoneNumber) VALUES ('{}', '{}', '{}', '{}', '{}','{}', '{}') RETURNING user_id".format(self.username, self.password, self.isAdmin,self.email,self.firstname, self.lastname, self.phoneNumber)
+		self.db.cursor.execute(query)
+		res = self.db.cursor.fetchone()
+		return res
+		
+
+
+	def find_user_by_username(self,username):
+		query = "SELECT * FROM users WHERE username = '{}'".format(username)
+		return self.db.fetch_one(query)
+
+
+
 
 
 class LoginUser:
 	def __init__(self, username, password):
+		self.db = Database()
 		self.password = password
 		self.username = username
 	def login(self):
-		for user in users:
-			if user['username'] == self.username and user['password'] == self.password:
-				return user['username']
+		query = "SELECT * FROM users WHERE username = '{}' AND password = '{}'".format(self.username,self.password)
+		self.db.cursor.execute(query)
+		user = self.db.cursor.fetchone()
+		print(user)
+		if user:
+			return {'usename':user[1], 'user_id':user[0],'isAdmin':user[3]}
+		return None
+
+
 
 
 
