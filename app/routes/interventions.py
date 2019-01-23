@@ -52,3 +52,20 @@ def get_anIntervention(flag_id,current_user):
 	if flag:
 		return jsonify(flag)
 	return jsonify({'message':'intervention with that id doesnot exist'})
+
+"""delete a red-flag"""
+
+
+@app.route("/ireporter/api/v2/intervention/<int:flag_id>", methods = ['DELETE'])
+@token_required
+def delete(current_user,flag_id):
+	flag_delete = intervention.delete_flag(flag_id)
+	if flag_delete:
+		return jsonify({
+				'status': 202,
+        		'data': [
+            	{	'id':flag_delete[0],
+            	    'message':'intervention record has been deleted'
+            	}]
+			}), 202
+	return jsonify({'message':'the intervention your trying to delete doesnot exist'}), 400
