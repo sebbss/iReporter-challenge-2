@@ -6,7 +6,7 @@ import datetime
 app.config['SECRET_KEY']= 'sebbss'
 
 def encode_token(identity):
-    return jwt.encode({'user':identity, 'exp':datetime.datetime.utcnow()+datetime.timedelta(minutes = 30)},app.config['SECRET_KEY'])
+    return jwt.encode({'user':identity, 'exp':datetime.datetime.utcnow()+datetime.timedelta(minutes = 1)},app.config['SECRET_KEY'])
 
 def token_required(f):
         @wraps(f)
