@@ -69,3 +69,24 @@ def delete(current_user,flag_id):
             	}]
 			}), 202
 	return jsonify({'message':'the intervention your trying to delete doesnot exist'}), 400
+
+"""update red_flag status"""
+
+@app.route("/interventions/<int:flag_id>/status",methods=['PATCH'])
+@token_required
+def update_status(current_user,flag_id):
+	status = request.get_json()
+	current = current_user['user']
+	print (current)
+	if current['isAdmin'] == True:
+		update_data = red_flag.update_status(status,flag_id)
+		if update_data:
+			return jsonify( {
+					'status': 200,
+        			'data': [
+            			{	'id':flag_id,
+            			    'message':'updated intervention record description'
+            				}]
+						})
+		return jsonify({'message':'no intervention with that id'})
+	return jsonify({'message':'not authorized to view this'})
