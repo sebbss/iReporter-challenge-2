@@ -7,8 +7,8 @@ class Database():
   def __init__(self):
     try:
       self.connection = psycopg2.connect(host = "ec2-54-227-246-152.compute-1.amazonaws.com",dbname = "d27hcrnfoaph58",post="5432",user = "spzzqfyvfsrcyp",password="8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093")
-      self.cursor = self.connection.cursor()
-      self.connection.autocommit()=True
+      self.connection.autocommit = True
+      self.cursor = self.connection.cursor()	
 
     except psycopg2.DatabaseError as e:
       print ('failed to connect to DB')
