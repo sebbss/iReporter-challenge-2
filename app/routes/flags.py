@@ -48,7 +48,7 @@ def get_allFlags(current_user):
 
 @app.route("/ireporter/api/v1/flags/<int:flag_id>")
 @token_required
-def get_aRedflag(flag_id,current_user):
+def get_aRedflag(current_user,flag_id):
 	flag = red_flag.get_flag_by_id(flag_id)
 	if flag:
 		return jsonify(flag)

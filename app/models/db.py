@@ -1,22 +1,25 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import os
+
 
 class Database():
-	"""class for DB"""
-	def __init__(self):
-		self.db = 'sebbss'
-		try:
-			self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', password='', host='localhost',port= '5432')
-			self.connection.autocommit = True
-			self.cursor = self.connection.cursor()
-			
-		except psycopg2.DatabaseError as e:
-			print ('failed to connect to DB')
-			
+  def __init__(self):
+    if os.getenv('DB_NAME') == 'sebbss':
+      self.db = 'sebbss'
+    else:
+      self.db = 'testdb'
+      print ('dgfhj')
+    try:
+      self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', password='', host='localhost',port= '5432')
+      self.connection.autocommit = True
+      self.cursor = self.connection.cursor()
+    except psycopg2.DatabaseError as e:
+      print ('failed to connect to DB')
 
-	def create_db_tables(self):
 
-		queries = (
+  def create_db_tables(self):
+    queries = (
 
         """
             CREATE TABLE IF not EXISTS  users(
@@ -52,7 +55,7 @@ class Database():
               description varchar(1000) not null,
               image varchar(100),
               video varchar(100),
-              flag_type varchar(15) not null,
+              flag_type varchar(15) not null default 'intervention',
               status varchar(20) not null default 'none',
               createdOn timestampTZ,
               createdby INTEGER REFERENCES users(user_id) ON DELETE CASCADE
@@ -60,31 +63,30 @@ class Database():
             """
 
     )
-		for query in queries:
-			self.cursor.execute(query)
-			self.connection.commit()
+    for query in queries:
+      self.cursor.execute(query)
+      self.connection.commit()
 
-	def fetch_one(self,query):
-		self.dict_cursor = self.connection.cursor(cursor_factory = RealDictCursor)
-		self.dict_cursor.execute(query)
-		res = self.dict_cursor.fetchone()
-		if res:
-			return res
-		return None
+  def fetch_one(self,query):
+    self.dict_cursor = self.connection.cursor(cursor_factory = RealDictCursor)
+    self.dict_cursor.execute(query)
+    res = self.dict_cursor.fetchone()
+    if res:
+      return res
+    return None
 
-	def drop_tables(self, *tables):
-		for table in tables:
-			query = "DROP TABLE IF EXISTS {}".format(table)
-			self.cursor.execute(query)
-			self.connection.commit()
+  def drop_tables(self):
+    query = "DROP TABLE IF EXISTS users,red_flags,interventions"
+    self.cursor.execute(query)
+    self.connection.commit()
 
-	def fetch_all(self, query):
-		try:
-			self.dict_cur = self.connection.cursor(cursor_factory=RealDictCursor)
-			self.dict_cur.execute(query)
-			results = self.dict_cur.fetchall()
-			if results:
-				return results
-		except (Exception, psycopg2.DatabaseError) as e:
-			return None
+  def fetch_all(self, query):
+    try:
+      self.dict_cur = self.connection.cursor(cursor_factory=RealDictCursor)
+      self.dict_cur.execute(query)
+      results = self.dict_cur.fetchall()
+      if results:
+        return results
+    except (Exception, psycopg2.DatabaseError) as e:
+      return None
 	

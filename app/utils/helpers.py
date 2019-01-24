@@ -6,7 +6,7 @@ import datetime
 app.config['SECRET_KEY']= 'sebbss'
 
 def encode_token(identity):
-    return jwt.encode({'user':identity, 'exp':datetime.datetime.utcnow()+datetime.timedelta(minutes = 1)},app.config['SECRET_KEY'])
+    return jwt.encode({'user':identity, 'exp':datetime.datetime.utcnow()+datetime.timedelta(minutes = 30)},app.config['SECRET_KEY'])
 
 def token_required(f):
         @wraps(f)
@@ -20,8 +20,8 @@ def token_required(f):
             try:
                 current_user = jwt.decode(token, app.config['SECRET_KEY'])
             except:
-                return jsonify({'message':'token is invalid'})
+                return jsonify({'message':'token is invalid'}), 403
 
             return f( current_user,*args,**kwargs)
         return decorated
-            
+

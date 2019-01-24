@@ -15,8 +15,11 @@ db = Database()
 def create_user():
     data = request.get_json()
     valid_email = validate_email(data['email'])
+
     if not valid_email:
         return jsonify({'message': 'email is invalid'}), 400
+    if len(data['email'])>200:
+        return jsonify({'message':'email is too long'})
     invalid_data = validate_user_strings(data['firstname'],data['lastname'],data['username'],data['phoneNumber'])
     if invalid_data:
         return invalid_data

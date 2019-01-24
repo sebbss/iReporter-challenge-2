@@ -11,7 +11,7 @@ intervention = Intervention()
 
 @app.route("/ireporter/api/v2/intervention", methods=['POST'])
 @token_required
-def createFlag(current_user):
+def createIntervention(current_user):
 	user=current_user['user']
 	createdby = user['user_id']
 	flag_data = request.get_json()
@@ -39,7 +39,7 @@ def createFlag(current_user):
 @app.route("/ireporter/api/v2/interventions")
 @token_required
 def get_interventons(current_user):
-	response = intervention.get_flags()
+	response = intervention.get_all_interventions()
 	return jsonify({'status':200 ,'interventions':response}), 200
 
 """get a specific intervention"""
@@ -58,7 +58,7 @@ def get_anIntervention(flag_id,current_user):
 
 @app.route("/ireporter/api/v2/intervention/<int:flag_id>", methods = ['DELETE'])
 @token_required
-def delete(current_user,flag_id):
+def delete_interv(current_user,flag_id):
 	flag_delete = intervention.delete_flag(flag_id)
 	if flag_delete:
 		return jsonify({
@@ -74,7 +74,7 @@ def delete(current_user,flag_id):
 
 @app.route("/interventions/<int:flag_id>/status",methods=['PATCH'])
 @token_required
-def update_status(current_user,flag_id):
+def update_intervention_status(current_user,flag_id):
 	status = request.get_json()
 	current = current_user['user']
 	print (current)
@@ -93,8 +93,8 @@ def update_status(current_user,flag_id):
 
 """Update an intervention"""
 
-@app.route("/ireporter/api/v2/intervention/<int:flag_id>/description",endpoint = 'description', methods = ['PATCH'])
-@app.route("/ireporter/api/v2/intervention/<int:flag_id>/location",endpoint = 'location', methods = ['PATCH'])
+@app.route("/ireporter/api/v2/intervention/<int:flag_id>/description",endpoint = 'des', methods = ['PATCH'])
+@app.route("/ireporter/api/v2/intervention/<int:flag_id>/location",endpoint = 'loc', methods = ['PATCH'])
 @token_required
 def update(current_user,flag_id):
 	
