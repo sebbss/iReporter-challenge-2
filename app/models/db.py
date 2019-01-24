@@ -12,9 +12,9 @@ class Database():
         self.db = 'testdb'
         print ('dgfhj')
     
-        self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', password='', host='localhost',port= '5432')
-        self.connection.autocommit = True
-        self.cursor = self.connection.cursor()
+      self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
+      self.connection.autocommit = True
+      self.cursor = self.connection.cursor()
     except psycopg2.DatabaseError as e:
       print ('failed to connect to DB')
 
