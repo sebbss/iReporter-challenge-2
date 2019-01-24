@@ -6,17 +6,9 @@ import os
 class Database():
   def __init__(self):
     try:
-      if os.getenv('DB_NAME') == 'sebbss':
-        self.db = 'sebbss'
-        self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
-      elif os.getenv('DB_NAME') == 'd27hcrnfoaph58':
-        self.connection = psycopg2.connect(url='postgres://spzzqfyvfsrcyp:8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093@ec2-54-227-246-152.compute-1.amazonaws.com:5432/d27hcrnfoaph58')
-      else:
-        self.db = 'testdb'
-        self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
-      
-      self.connection.autocommit = True
+      self.connection = psycopg2.connect(url = 'postgres://spzzqfyvfsrcyp:8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093@ec2-54-227-246-152.compute-1.amazonaws.com:5432/d27hcrnfoaph58')
       self.cursor = self.connection.cursor()
+      self.connection.autocommit()=true
 
     except psycopg2.DatabaseError as e:
       print ('failed to connect to DB')
