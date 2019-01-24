@@ -8,13 +8,18 @@ class Database():
     try:
       if os.getenv('DB_NAME') == 'sebbss':
         self.db = 'sebbss'
-      else:
+        self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
+      elif:
         self.db = 'testdb'
-        print ('dgfhj')
-    
-      self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
+        self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
+      else:
+        self.connection = psycopg2.connect(dbname='d27hcrnfoaph58', user = 'spzzqfyvfsrcyp',
+                             host = 'ec2-54-227-246-152.compute-1.amazonaws.com',
+                             password='8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093', url='postgres://spzzqfyvfsrcyp:8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093@ec2-54-227-246-152.compute-1.amazonaws.com:5432/d27hcrnfoaph58',port = '5432' )
+      
       self.connection.autocommit = True
       self.cursor = self.connection.cursor()
+
     except psycopg2.DatabaseError as e:
       print ('failed to connect to DB')
 
@@ -32,7 +37,7 @@ class Database():
               firstname varchar(20),
               lastname varchar(20),
               phonenumber varchar(10),
-              registered timestampTZ
+              registered timestampTZ default NOW()
             );
             """,
 
@@ -58,7 +63,7 @@ class Database():
               video varchar(100),
               flag_type varchar(15) not null default 'intervention',
               status varchar(20) not null default 'none',
-              createdOn timestampTZ,
+              createdOn timestampTZ default NOW(),
               createdby INTEGER REFERENCES users(user_id) ON DELETE CASCADE
             );
             """
