@@ -72,7 +72,7 @@ class Flag:
 
 
 	def get_flag_by_id(self, _id):
-		query = "SELECT * FROM red_flags WHERE flag_id = '{}'".format(_id)
+		query = "SELECT * FROM red_flags WHERE flag_id = {} ".format(_id)
 		return self.db.fetch_one(query)
 
 	def delete_flag(self, flag_id):
