@@ -5,15 +5,16 @@ import os
 
 class Database():
   def __init__(self):
-    if os.getenv('DB_NAME') == 'sebbss':
-      self.db = 'sebbss'
-    else:
-      self.db = 'testdb'
-      print ('dgfhj')
     try:
-      self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', password='', host='localhost',port= '5432')
-      self.connection.autocommit = True
-      self.cursor = self.connection.cursor()
+      if os.getenv('DB_NAME') == 'sebbss':
+        self.db = 'sebbss'
+      else:
+        self.db = 'testdb'
+        print ('dgfhj')
+    
+        self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', password='', host='localhost',port= '5432')
+        self.connection.autocommit = True
+        self.cursor = self.connection.cursor()
     except psycopg2.DatabaseError as e:
       print ('failed to connect to DB')
 
@@ -90,3 +91,6 @@ class Database():
     except (Exception, psycopg2.DatabaseError) as e:
       return None
 	
+
+  if __name__ == '__main__':
+    db = Database()
