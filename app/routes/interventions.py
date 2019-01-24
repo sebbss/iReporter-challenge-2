@@ -47,8 +47,8 @@ def get_interventons(current_user):
 
 @app.route("/ireporter/api/v2/intervention/<int:flag_id>")
 @token_required
-def get_anIntervention(flag_id,current_user):
-	flag = intervention.get_anIntervention(flag_id)
+def get_anIntervention(current_user,flag_id):
+	flag = intervention.get_intervention_by_id(flag_id)
 	if flag:
 		return jsonify(flag)
 	return jsonify({'message':'intervention with that id doesnot exist'})
@@ -78,8 +78,8 @@ def update_intervention_status(current_user,flag_id):
 	status = request.get_json()
 	current = current_user['user']
 	print (current)
-	if current['isAdmin'] == True:
-		update_data = red_flag.update_status(status,flag_id)
+	if current['isAdmin'] == 'true':
+		update_data = intervention.update_status(status,flag_id)
 		if update_data:
 			return jsonify( {
 					'status': 200,

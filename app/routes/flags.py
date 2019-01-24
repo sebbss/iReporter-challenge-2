@@ -13,6 +13,7 @@ red_flag = Flag()
 @token_required
 def createFlag(current_user):
 	user=current_user['user']
+
 	createdby = user['user_id']
 	flag_data = request.get_json()
 	location = flag_data['location']
@@ -44,7 +45,6 @@ def get_allFlags(current_user):
 
 
 """get a specific red-flag"""
-
 
 @app.route("/ireporter/api/v1/flags/<int:flag_id>")
 @token_required
@@ -79,7 +79,7 @@ def update_status(current_user,flag_id):
 	status = request.get_json()
 	current = current_user['user']
 	print (current)
-	if current['isAdmin'] == True:
+	if current['isAdmin'] == 'true':
 		update_data = red_flag.update_status(status,flag_id)
 		if update_data:
 			return jsonify( {

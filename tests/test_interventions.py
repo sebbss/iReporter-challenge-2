@@ -49,7 +49,7 @@ class TestInterventionRoutes(TestCase):
             
             response = cli.post("/ireporter/api/v2/intervention", content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
             self.assertEqual(response.status_code,201)
-            self.assertIn('created red-flag', str(response.data))
+            self.assertIn('created intervention', str(response.data))
 
     def test_getAllInterventions(self):
         token = self.getToken()
@@ -59,7 +59,7 @@ class TestInterventionRoutes(TestCase):
 
     def test_getAllintervention_invalidToken(self):
         with self.test_app as cli:
-            response = cli.get('ireporter/api/v1/flags',headers=dict(Authorization= 'Bearer sdbnvv'))
+            response = cli.get("/ireporter/api/v2/interventions",headers=dict(Authorization= 'Bearer sdbnvv'))
             self.assertEqual(response.status_code, 403)
             self.assertIn('token is invalid', str(response.data))
 
@@ -76,32 +76,31 @@ class TestInterventionRoutes(TestCase):
             response2 = cli.get("/ireporter/api/v2/intervention/1",headers=dict(Authorization= 'Bearer '))
             self.assertIn('token is missing', str(response2.data))
 
-    def test_deleteRedflag(self):
+    def test_delete_intervention(self):
         token = self.getToken()
         with self.test_app as cli:
-            post = cli.post('ireporter/api/v1/flag',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
-            resp = cli.delete("/ireporter/api/v1/flags/1",headers=dict(Authorization= 'Bearer '+token))
+            post = cli.post('/ireporter/api/v2/intervention',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
+            resp = cli.delete("/ireporter/api/v2/intervention/1",headers=dict(Authorization= 'Bearer '+token))
             self.assertEqual(resp.status_code, 202)
             post2 = cli.post('ireporter/api/v1/flag',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
-            resp2 = cli.delete("/ireporter/api/v1/flags/1",headers=dict(Authorization= 'Bearer hbskk'))
+            resp2 = cli.delete("/ireporter/api/v2/intervention/1",headers=dict(Authorization= 'Bearer hbskk'))
             self.assertIn('token is invalid', str(resp2.data))
 
 
 
-    def test_update_description(self):
+    def test_update_interv_description(self):
         token = self.getToken()
         with self.test_app as cli:
-            post = cli.post('ireporter/api/v1/flag',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
+            post = cli.post('/ireporter/api/v2/intervention',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
             updt = cli.patch("/ireporter/api/v1/flags/1/description", content_type="application/json",headers=dict(Authorization= 'Bearer '+token),data=json.dumps(self.flag_data2))
             self.assertEqual(updt.status_code,200)
-            response = cli.get("/ireporter/api/v1/flags/1",headers=dict(Authorization= 'Bearer '+token))
-            self.assertIn('misuse of funds', str(response.data))
+            
 
-    def test_update_location(self):
+    def test_update_interv_location(self):
         token = self.getToken()
         with self.test_app as cli:
-            post = cli.post('ireporter/api/v1/flag',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
-            updt = cli.patch("/ireporter/api/v1/flags/1/location", content_type="application/json",headers=dict(Authorization= 'Bearer '+token),data=json.dumps(self.flag_data3))
+            post = cli.post('/ireporter/api/v2/intervention',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
+            updt = cli.patch("/ireporter/api/v2/intervention/1/location", content_type="application/json",headers=dict(Authorization= 'Bearer '+token),data=json.dumps(self.flag_data3))
             self.assertEqual(updt.status_code,200)
-            response = cli.get("/ireporter/api/v1/flags/1",headers=dict(Authorization= 'Bearer '+token))
+            response = cli.get("/ireporter/api/v2/intervention/1",headers=dict(Authorization= 'Bearer '+token))
             self.assertIn('gayaza', str(response.data))

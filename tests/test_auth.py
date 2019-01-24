@@ -65,10 +65,7 @@ class TestAuth(TestCase):
 
 
 
-	def test_register(self):
-		with self.test_app as cli:
-			response = cli.post('/register', content_type='application/json', data=json.dumps(self.users))
-			self.assertEqual(response.status_code, 201)
+	
 			
 
 	def test_invalid_email(self):
@@ -85,11 +82,7 @@ class TestAuth(TestCase):
 			response = cli.post('/register', content_type='application/json', data=json.dumps(self.users5))
 			self.assertIn('username has to be in alphabetical letters and shouldnt contain spaces',str(response.data))
 
-	def test_loginUser(self):
-		with self.test_app as cli:
-			response = cli.post('/register', content_type='application/json', data=json.dumps(self.users))
-			login = cli.post('/login', content_type='application/json', data=json.dumps(self.users6))
-			self.assertEqual(response.status_code, 200)
+	
 
 
 

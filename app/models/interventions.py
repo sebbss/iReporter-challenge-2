@@ -21,7 +21,7 @@ class Intervention:
 			self.db.connection.commit()
 		return None
 
-	def update_intervention_description(self, flag_id, data,endpoint):
+	def update_intervention(self, flag_id, data,endpoint):
 		interv = self.get_intervention_by_id(flag_id)
 		if interv and interv['status']=='none':
 			
@@ -53,7 +53,7 @@ class Intervention:
 		return None
 
 	def update_status(self,data,flag_id):
-		flag = self.intervention_by_id(flag_id)
+		flag = self.get_intervention_by_id(flag_id)
 
 		status = data['status']
 		if flag:

@@ -35,20 +35,6 @@ class TestRoutes(TestCase):
     def tearDown(self):
         db.drop_tables()
 
-     
-       
-        
-        
-        
-        # self.users2= {
-        #     "firstname": "joseph",
-        #     "lastname": "senabulya",
-        #     "email": "jsenabulya2gmail.com",
-        #     "phoneNumber": "0779556964",
-        #     "username": "sebbss",
-        #     "isAdmin": "true",
-        #     "password": "pass"
-        # }
     def getToken(self):
         with self.test_app as cli:
             response = cli.post('/register', content_type='application/json', data=json.dumps(self.users))
