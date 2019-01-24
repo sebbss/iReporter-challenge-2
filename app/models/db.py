@@ -10,9 +10,7 @@ class Database():
         self.db = 'sebbss'
         self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
       elif os.getenv('DB_NAME') == 'd27hcrnfoaph58':
-        self.connection = psycopg2.connect(dbname='d27hcrnfoaph58', user = 'spzzqfyvfsrcyp',
-                             host = 'ec2-54-227-246-152.compute-1.amazonaws.com',
-                             password='8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093',port = '5432' )
+        self.connection = psycopg2.connect(url='postgres://spzzqfyvfsrcyp:8be1b4979cb14615fdf020b1b15de2410836f50388b9c514ea367fa6f11f2093@ec2-54-227-246-152.compute-1.amazonaws.com:5432/d27hcrnfoaph58')
       else:
         self.db = 'testdb'
         self.connection = psycopg2.connect(dbname=self.db, user= 'postgres', host='localhost',port= '5432')
