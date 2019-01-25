@@ -9,6 +9,7 @@ red_flag = Flag()
 
 
 @app.route("/ireporter/api/v1/flag", methods=['POST'])
+@jwt_required
 def createFlag():
 	
     flag_data = request.get_json()
