@@ -1,8 +1,8 @@
 # iReporter
 iReporter is a web applcation that enables the public to raise red-flags about corruption situations in their neeighbourhoods and also interven in the re-development of the roads or other infrastrature that has worn out
 
-[![Build Status](https://travis-ci.org/sebbss/iReporter-challenge-2.svg?branch=develop)](https://travis-ci.org/sebbss/iReporter-challenge-2)
-[![Coverage Status](https://coveralls.io/repos/github/sebbss/iReporter-challenge-2/badge.svg?branch=coveralls)](https://coveralls.io/github/sebbss/iReporter-challenge-2?branch=coveralls)
+[![Build Status](https://travis-ci.org/sebbss/iReporter-challenge-2.svg?branch=master)](https://travis-ci.org/sebbss/iReporter-challenge-2)
+[![Coverage Status](https://coveralls.io/repos/github/sebbss/iReporter-challenge-2/badge.svg?branch=challenge_3)](https://coveralls.io/github/sebbss/iReporter-challenge-2?branch=challenge_3)
 [![Maintainability](https://api.codeclimate.com/v1/badges/58e3664e3af045a4cc6f/maintainability)](https://codeclimate.com/github/sebbss/iReporter-challenge-2/maintainability)
 
 ## Getting Started
