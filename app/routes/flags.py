@@ -10,7 +10,6 @@ red_flag = Flag()
 
 
 @app.route("/ireporter/api/v1/flag", methods=['POST'])
-<<<<<<< HEAD
 @token_required
 def createFlag(current_user):
 	user=current_user['user']
@@ -26,17 +25,6 @@ def createFlag(current_user):
 		return res
 	new_flag = red_flag.create_redflag(location, description, video, image,createdby)
 	return jsonify({
-=======
-@jwt_required
-def createFlag():
-	
-    flag_data = request.get_json()
-    res = validate_flag(**flag_data)
-    if res:
-    	return res
-    new_flag = red_flag.create_redflag(flag_data)
-    return jsonify({
->>>>>>> 79bd1114591bb75d38c4ce501cfe84bb91defcab
         'status': 201,
         'data': [
             {
