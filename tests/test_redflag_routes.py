@@ -15,8 +15,8 @@ class TestRoutes(TestCase):
             "email": "jsenabulya2@gmail.com",
             "phoneNumber": "0779556964",
             "username": "sebbss",
-            "isAdmin": "true",
-            "password": "pass"
+            "isAdmin": "True",
+            "password": "Blue#2line"
         }
         self.flag_data = {
             'location': ' bwaise',
@@ -122,15 +122,4 @@ class TestRoutes(TestCase):
     #         self.assertIn(
     #             'the red-flag either doesnot exist or cannot be edited', str(updt.data))
 
-    # def test_registerUser(self):
-    # 	with self.test_app as cli:
-    # 		res = cli.post('/register', content_type='application/json', data=json.dumps(self.users))
-    # 		res2 = cli.post('/register', content_type='application/json', data=json.dumps(self.users))
-    # 	self.assertEqual(res.status_code,201)
-    # 	self.assertIn('username already exists',str(res2.data))
-
-
-    # def test_user_Invalid_email(self):
-    # 	with self.test_app as cli:
-    # 		res = cli.post('/register', content_type='application/json', data=json.dumps(self.users2))
-    # 		self.assertIn('email is invalid',str(res.data))
+   

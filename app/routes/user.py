@@ -23,8 +23,8 @@ def create_user():
     invalid_data = validate_user_strings(data['firstname'],data['lastname'],data['username'],data['phoneNumber'])
     if invalid_data:
         return invalid_data
-    # if invalid_password(data['password']):
-    #     return jsonify({'message':'password should contain a capital letter, a special character and a number'})
+    if invalid_password(data['password']):
+        return jsonify({'message':'password should contain a capital letter, a special character and a number'})
 
     new_user = User(firstname=data['firstname'], lastname=data['lastname'], 
                     phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,isAdmin=data['isAdmin'], password=data['password'])

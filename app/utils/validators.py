@@ -33,4 +33,9 @@ def validate_user_strings(firstname, lastname, username, phonenumber):
 def invalid_password(password):
     if not re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', password):
         return True
-    
+
+def validate_isAdmin(isAdmin):
+    if not isAdmin:
+        return "isAdmin shoulnot be empty"
+    if isAdmin not in ['True','False']:
+        return 'isAdmin should either be True or False'

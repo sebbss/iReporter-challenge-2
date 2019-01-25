@@ -15,8 +15,8 @@ class TestInterventionRoutes(TestCase):
             "email": "jsenabulya2@gmail.com",
             "phoneNumber": "0779556964",
             "username": "sebbss",
-            "isAdmin": "true",
-            "password": "pass"
+            "isAdmin": "True",
+            "password": "Blue@line2"
         }
         self.flag_data = {
             'location': ' bwaise',
@@ -80,6 +80,7 @@ class TestInterventionRoutes(TestCase):
         token = self.getToken()
         with self.test_app as cli:
             post = cli.post('/ireporter/api/v2/intervention',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
+
             resp = cli.delete("/ireporter/api/v2/intervention/1",headers=dict(Authorization= 'Bearer '+token))
             self.assertEqual(resp.status_code, 202)
             post2 = cli.post('ireporter/api/v1/flag',content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))

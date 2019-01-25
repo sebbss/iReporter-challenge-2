@@ -32,6 +32,17 @@ Users can perform the following tasks
 - update the location of a red-flag
 - update the description of a red-flag
 - delete a specific red-flag
+- login a user
+- register a user
+- update status of redflag
+- update status of intervention
+- get all interventions
+- create an intervention
+- get a specific intervention
+- update the location of an intervention
+- update the description of an intervention
+- delete a specific intervention
+
 
 ## Endpoints
 |HTTP Method | End point | Action|
@@ -42,7 +53,16 @@ Users can perform the following tasks
 | DELETE | /ireporter/api/v1/flags/<int:flag_id> | delete a specific red-flag |
 | PATCH | /ireporter/api/v1/flags/<int:flag_id>/description | update the description of a red-flag |
 | PATCH | /ireporter/api/v1/flags/<int:flag_id>/location | update the location of a red-flag |
-
+| POST | /register | register a user |
+| POST | /login | login a user |
+| PATCH | /red_flags/<int:flag_id>/status | update status of a red-flag |
+| PATCH | /interventions/<int:flag_id>/status | update status of an intervention |
+| POST | /ireporter/api/v2/intervention | create an intervention |
+| GET | /ireporter/api/v2/interventions | get all interventions |
+| GET | /ireporter/api/v2/intervention/<int:flag_id> | get a specific intervention |
+| DELETE | /ireporter/api/v2/intervention/<int:flag_id> | delete an intervention |
+| PATCH | /ireporter/api/v2/intervention/<int:flag_id>/description | update an intervention description |
+| PATCH | /ireporter/api/v2/intervention/<int:flag_id>/location | update an intervention location |
 ## Built with 
 - Flask [python framework]
 - Pytest [testing framework]
