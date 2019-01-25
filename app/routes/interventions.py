@@ -78,7 +78,7 @@ def update_intervention_status(current_user,flag_id):
 	status = request.get_json()
 	current = current_user['user']
 	print (current)
-	if current['isAdmin'] == 'true':
+	if current['isAdmin'] == 'True':
 		update_data = intervention.update_status(status,flag_id)
 		if update_data:
 			return jsonify( {
