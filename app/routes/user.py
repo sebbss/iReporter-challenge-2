@@ -6,7 +6,7 @@ from app.utils.validators import validate_user_strings , invalid_password
 from app.utils.helpers import encode_token
 from app.models.db import Database
 
-db = Database()
+
 
 """Register user"""
 
@@ -19,17 +19,19 @@ def create_user():
     if not valid_email:
         return jsonify({'message': 'email is invalid'}), 400
     if len(data['email'])>200:
-        return jsonify({'message':'email is too long'})
+        return jsonify({'message':'email is too long'}), 400
     invalid_data = validate_user_strings(data['firstname'],data['lastname'],data['username'],data['phoneNumber'])
     if invalid_data:
-        return invalid_data
+        return invalid_data,400
     if invalid_password(data['password']):
         return jsonify({'message':'password should contain a capital letter, a special character and a number'})
 
     new_user = User(firstname=data['firstname'], lastname=data['lastname'], 
                     phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,isAdmin=data['isAdmin'], password=data['password'])
 
-    reg = new_user.registerUser()
+    reg = new_user.registerUser(data['username'],data['email'])
+    if not reg:
+        return jsonify({'message':'username or email is already taken'}),400
 
     identity = {'username':data['username'],'user_id':reg[0],'isAdmin':data['isAdmin']}
     access_token = encode_token(identity)

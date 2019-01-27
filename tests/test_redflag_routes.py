@@ -57,7 +57,7 @@ class TestRoutes(TestCase):
             
             response = cli.post('ireporter/api/v1/flag', content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
             self.assertEqual(response.status_code,201)
-            self.assertIn('created red-flag', str(response.data))
+            
 
     def test_getAllFlags(self):
         token = self.getToken()

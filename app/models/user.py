@@ -16,7 +16,11 @@ class User:
 
 
 
-	def registerUser(self):
+	def registerUser(self,username,email):
+		resp_username = self.find_user_by_username(username)
+		resp_email = self.find_user_by_email(email)
+		if resp_email or resp_username:
+			return None
 		query = "INSERT INTO users (username, password, isAdmin,email,firstname, lastname, phoneNumber) VALUES ('{}', '{}', '{}', '{}', '{}','{}', '{}') RETURNING user_id".format(self.username, self.password, self.isAdmin,self.email,self.firstname, self.lastname, self.phoneNumber)
 		self.db.cursor.execute(query)
 		res = self.db.cursor.fetchone()
@@ -28,6 +32,9 @@ class User:
 		query = "SELECT * FROM users WHERE username = '{}'".format(username)
 		return self.db.fetch_one(query)
 
+	def find_user_by_email(self,email):
+		query = "SELECT * FROM users WHERE email = '{}'".format(email)
+		return self.db.fetch_one(query)
 
 
 

@@ -49,7 +49,7 @@ class TestInterventionRoutes(TestCase):
             
             response = cli.post("/ireporter/api/v2/intervention", content_type="application/json",headers=dict(Authorization= 'Bearer '+token), data=json.dumps(self.flag_data))
             self.assertEqual(response.status_code,201)
-            self.assertIn('created intervention', str(response.data))
+            self.assertIn('created interventions', str(response.data))
 
     def test_getAllInterventions(self):
         token = self.getToken()
