@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from app.models.models import Model
 from app.app import app
-from app.utils.validators import validate_flag_data
+from app.utils.validators import validate_flag_data, validate_status
 from app.utils.helpers import token_required
 
 incident = Model()
@@ -34,10 +34,13 @@ def create_incident(current_user):
 @app.route("/ireporter/api/v1/flags", endpoint= 'red')
 @token_required
 def get_all(current_user):
+	user = current_user['user']
+	createdby = user['user_id']
+	isAdmin = user['isAdmin']
 	if request.endpoint == 'interv':
-		return jsonify(incident.get_all("interventions")), 200
+		return jsonify(incident.get_all("interventions",createdby,isAdmin)), 200
 	elif request.endpoint == 'red':
-		return jsonify(incident.get_all("red_flags")), 200
+		return jsonify(incident.get_all("red_flags",createdby,isAdmin)), 200
 	return jsonify ({'message':'url is invalid'}),400
 
 """get a specific incident"""
@@ -46,10 +49,11 @@ def get_all(current_user):
 @token_required
 
 def get_specific(current_user,flag_id):
+	createdby = current_user['user']['user_id']
 	if request.endpoint == 'inter':
-		return jsonify(incident.get_one(flag_id,"interventions"))
+		return jsonify(incident.get_one(flag_id,"interventions", createdby))
 	elif request.endpoint == 'red_f':
-		return jsonify(incident.get_one(flag_id,"red_flags"))
+		return jsonify(incident.get_one(flag_id,"red_flags", createdby))
 	return jsonify ({'message':'url is invalid'}),400
 
 """delete an incident"""
@@ -58,10 +62,11 @@ def get_specific(current_user,flag_id):
 @app.route("/ireporter/api/v1/flags/<int:flag_id>",endpoint='red_flag1' ,methods = ['DELETE'])
 @token_required
 def delete(current_user,flag_id):
+	createdby = current_user['user']['user_id']
 	if request.endpoint == 'interv1':
-		return jsonify(incident.delete(flag_id,"interventions")),202
+		return jsonify(incident.delete(flag_id,"interventions", createdby)),202
 	elif request.endpoint == 'red_flag1':
-		return jsonify(incident.delete(flag_id,"red_flags")),202
+		return jsonify(incident.delete(flag_id,"red_flags", createdby)),202
 	return jsonify ({'message':'url is invalid'}),400
 
 
@@ -70,12 +75,16 @@ def delete(current_user,flag_id):
 @app.route("/red_flags/<int:flag_id>/status",endpoint='red_flag2',methods=['PATCH'])
 @token_required
 def update_status(current_user,flag_id):
-	status = request.get_json()
-	if request.endpoint == 'interv2':
-		return jsonify(incident.update_status('status',status['status'],"interventions",flag_id))
-	elif request.endpoint == 'red_flag2':
-		return jsonify(incident.update_status('status',status['status'],"red_flags",flag_id))
-	return jsonify ({'message':'url is invalid'}),400
+	if current_user['user']['isAdmin'] == True:
+		status = request.get_json()
+		if validate_status(status['status']):
+			return validate_status(status['status'])
+		if request.endpoint == 'interv2':
+			return jsonify(incident.update_status('status',status['status'],"interventions",flag_id))
+		elif request.endpoint == 'red_flag2':
+			return jsonify(incident.update_status('status',status['status'],"red_flags",flag_id))
+		return jsonify ({'message':'url is invalid'}),400
+	return jsonify({'message':'not permitted to do this'}), 403
 
 """update data"""
 @app.route("/ireporter/api/v2/intervention/<int:flag_id>/description",endpoint = 'des', methods = ['PATCH'])
@@ -84,13 +93,14 @@ def update_status(current_user,flag_id):
 @app.route("/ireporter/api/v1/flags/<int:flag_id>/location",endpoint = 'location', methods = ['PATCH'])
 @token_required
 def update_data(current_user,flag_id):
+	createdby = current_user['user']['user_id']
 	data = request.get_json()
 	if request.endpoint == 'des':
-		return jsonify(incident.update_data('description',flag_id,data['description'],"interventions"))
+		return jsonify(incident.update_data('description',flag_id,data['description'],"interventions", createdby))
 	elif request.endpoint == 'loc':
-		return jsonify(incident.update_data('location',flag_id,data['location'],"interventions"))
+		return jsonify(incident.update_data('location',flag_id,data['location'],"interventions",createdby))
 	elif request.endpoint == 'description':
-		return jsonify(incident.update_data('description',flag_id,data['description'],"red_flags"))
+		return jsonify(incident.update_data('description',flag_id,data['description'],"red_flags",createdby))
 	elif request.endpoint == 'location':
-		return jsonify(incident.update_data('location',flag_id,data['location'],"red_flags"))
+		return jsonify(incident.update_data('location',flag_id,data['location'],"red_flags",createdby))
 	return jsonify ({'message':'url is invalid'}),400

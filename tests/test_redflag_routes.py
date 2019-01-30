@@ -114,6 +114,10 @@ class TestRoutes(TestCase):
             response = cli.get("/ireporter/api/v1/flags/1",headers=dict(Authorization= 'Bearer '+token))
             self.assertIn('gayaza', str(response.data))
 
+
+    
+        
+
     # def test_update_withInvalid_id(self):
     #     with self.test_app as cli:
     #         updt = cli.patch("/ireporter/api/v1/flags/4/description", content_type="application/json",

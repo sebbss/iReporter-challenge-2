@@ -2,7 +2,7 @@ from flask import request, jsonify
 from app.models.user import User, LoginUser
 from app.app import app
 from validate_email import validate_email
-from app.utils.validators import validate_user_strings , invalid_password
+from app.utils.validators import validate_user_strings , invalid_password, validate_isAdmin
 from app.utils.helpers import encode_token
 from app.models.db import Database
 
@@ -18,11 +18,14 @@ def create_user():
 
     if not valid_email:
         return jsonify({'message': 'email is invalid'}), 400
-    if len(data['email'])>200:
+    if len(data['email'])>70:
         return jsonify({'message':'email is too long'}), 400
     invalid_data = validate_user_strings(data['firstname'],data['lastname'],data['username'],data['phoneNumber'])
     if invalid_data:
         return invalid_data,400
+    invalid_adminData = validate_isAdmin(data['isAdmin'])
+    if invalid_adminData:
+        return invalid_adminData,400
     if invalid_password(data['password']):
         return jsonify({'message':'password should contain a capital letter, a special character and a number'})
 

@@ -19,18 +19,16 @@ class Model:
                     }]
         }
         return message
-    def update_data(self,updt,flag_id, data, table_name):
-        table =self.remove_quots(table_name)
+
+
+    def update_status(self, updt,data, table_name, flag_id):
+        result = self.remove_quots(table_name)
         update = self.remove_quots(updt)
-        result = self.get_by_id(flag_id, table)
-        if result:
-            return self.update(update,data, table, flag_id)
-        return {'message': 'id doesnt exist or it cant be edited'}
-
-
-    def update(self, updt,data, table_name, flag_id):
-
-        query = "UPDATE {} SET {} ='{}' WHERE flag_id = {} ".format(table_name, updt, data, flag_id)
+        qury = "SELECT * FROM {} WHERE flag_id = '{}' ".format(result, flag_id)
+        res = self.db.fetch_one(qury)
+        if not res:
+            return {'message': 'id doesnot exist'}
+        query = "UPDATE {} SET {} ='{}' WHERE flag_id = {} ".format(result, update, data, flag_id)
         self.db.cursor.execute(query)
         self.db.connection.commit()
         message = {
@@ -41,33 +39,53 @@ class Model:
                   }]
         }
         return message
-    
-    def update_status(self, updt,status, table_name, flag_id):
-        result = self.remove_quots(table_name)
+
+    def update_data(self, updt, flag_id,data, table_name,createdby):
+        table =self.remove_quots(table_name)
         update = self.remove_quots(updt)
-        res = self.get_by_id(flag_id, result)
-        if res:
-            return self.update(update,status, result, flag_id)
-        return {'message': 'id doesnot exist'}
+        result = self.get_by_id(flag_id, table,createdby)
+        if result and result['status'] == 'none':
+            
+            query = "UPDATE {} SET {} ='{}' WHERE flag_id = {} AND createdby ={} ".format(table, update, data, flag_id, createdby)
+            self.db.cursor.execute(query)
+            self.db.connection.commit()
+            message = {
+                'status': 200,
+                'data': [
+                    {   'id': flag_id,
+                      'message': 'udated {} record {}'.format(table_name, updt)
+                      }]
+            }
+            return message
+        return {'message': 'id doesnt exist or it cant be edited'}
+    
 
-
-    def get_by_id(self, flag_id, table_name):
-        query = "SELECT * FROM {} WHERE flag_id = '{}'".format(table_name,flag_id)
+    def get_by_id(self, flag_id, table_name,createdby):
+        query = "SELECT * FROM {} WHERE flag_id = '{}' AND createdby = {}".format(table_name, flag_id, createdby)
 
         return self.db.fetch_one(query)
 
-    def get_all(self, table_name):
-        result = self.remove_quots(table_name)
-        query = "SELECT * FROM {}".format(result)
+    
+
+    def get_all(self, table_name,createdby,isAdmin):
+        table = self.remove_quots(table_name)
+        
+        if isAdmin == True:
+            query = "SELECT * FROM {}".format(table)
+            result = self.db.fetch_all(query)
+            return {'status': 200, '{}'.format(table): result}
+        
+        query = "SELECT * FROM {} WHERE createdby = {}".format(table,createdby)
         result = self.db.fetch_all(query)
-        return {'status': 200, '{}'.format(table_name): result}
+        return {'status': 200, '{}'.format(table): result}
 
 
-    def delete(self, flag_id, table_name):
+    
+    def delete(self, flag_id, table_name, createdby):
         result = self.remove_quots(table_name)
-        res = self.get_by_id(flag_id, result)
+        res = self.get_by_id(flag_id, result, createdby)
         if res:
-            query = "DELETE FROM {} WHERE flag_id = '{}' RETURNING flag_id".format(result,flag_id)
+            query = "DELETE FROM {} WHERE flag_id = '{}' AND createdby = {} RETURNING flag_id".format(result,flag_id,createdby)
             self.db.cursor.execute(query)
             _id = self.db.cursor.fetchone()
             message = {
@@ -81,9 +99,9 @@ class Model:
         return {'message': 'id doesnt exist in {}'.format(result)}
     """get one"""
 
-    def get_one(self, flag_id, table_name):
+    def get_one(self, flag_id, table_name,createdby):
         result = self.remove_quots(table_name)
-        flag = self.get_by_id(flag_id, result)
+        flag = self.get_by_id(flag_id, result,createdby)
         if flag:
             return flag
         return {'message': 'flag with that id doesnot exist'}

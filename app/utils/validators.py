@@ -36,6 +36,10 @@ def invalid_password(password):
 
 def validate_isAdmin(isAdmin):
     if not isAdmin:
-        return "isAdmin shoulnot be empty"
+        return jsonify({"message":"isAdmin shoulnot be empty"})
     if isAdmin not in ['True','False']:
-        return 'isAdmin should either be True or False'
+        return jsonify({'message':'isAdmin should either be True or False'})
+
+def validate_status(status):
+    if status not in ['resolved','under investigation','rejected']:
+        return jsonify({'message':'status should either be resolved,under investigation or rejected'})
