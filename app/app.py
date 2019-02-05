@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/app/routes/user/*": {"origins": "*"}})
+cors = CORS(app)
 from app.routes.routes import *
 from app.routes.user import *
 app.config['SECRET_KEY'] = 'sebbss'
