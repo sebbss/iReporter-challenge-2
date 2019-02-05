@@ -60,11 +60,11 @@ def login():
     if identity:
         access_token = encode_token(identity)
         return jsonify({
-        'status': 200,
+        'status': 201,
         'data': [
                 {
                 'token': access_token.decode('utf-8'),
                 'user':identity
                 }]
-            }), 200
+            }), 201
     return jsonify({'message': 'invalid credentials'}), 401
