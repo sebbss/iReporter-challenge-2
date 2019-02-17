@@ -18,7 +18,7 @@ def create_incident(current_user):
 	description = flag_data['description']
 	video = flag_data['video']
 	image = flag_data['image']
-	res = validate_flag_data(description,video,image,location)
+	res = validate_flag_data(description,location)
 	if res:
 		return res, 400
 	if request.endpoint=='intervention':

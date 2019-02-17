@@ -52,10 +52,3 @@ class LoginUser:
 		if user:
 			return {'usename':user[1], 'user_id':user[0],'isAdmin':user[3]}
 		return None
-
-
-
-
-
-
-
