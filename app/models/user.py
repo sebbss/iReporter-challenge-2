@@ -20,7 +20,7 @@ class User:
 		resp_email = self.find_user_by_email(email)
 		if resp_email or resp_username:
 			return None
-		query = "INSERT INTO users (username, password, isAdmin,email,firstname, lastname, phoneNumber) VALUES ('{}', '{}', '{}', '{}','{}', '{}') RETURNING user_id".format(self.username, self.password, self.email,self.firstname, self.lastname, self.phoneNumber)
+		query = "INSERT INTO users (username, password, email,firstname, lastname, phoneNumber) VALUES ('{}', '{}', '{}', '{}','{}', '{}') RETURNING user_id".format(self.username, self.password, self.email,self.firstname, self.lastname, self.phoneNumber)
 		self.db.cursor.execute(query)
 		res = self.db.cursor.fetchone()
 		return res
