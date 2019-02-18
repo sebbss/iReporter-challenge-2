@@ -53,7 +53,7 @@ class Model:
                 'status': 200,
                 'data': [
                     {   'id': flag_id,
-                      'message': 'udated {} record {}'.format(table_name, updt)
+                      'message': 'updated {} record {}'.format(table_name, updt)
                       }]
             }
             return message
@@ -77,14 +77,14 @@ class Model:
         
         query = "SELECT * FROM {} WHERE createdby = {}".format(table,createdby)
         result = self.db.fetch_all(query)
-        return {'status': 200, '{}'.format(table): result}
+        return {'{}'.format(table): result}
 
 
     
     def delete(self, flag_id, table_name, createdby):
         result = self.remove_quots(table_name)
         res = self.get_by_id(flag_id, result, createdby)
-        if res:
+        if res and res['status']== "none":
             query = "DELETE FROM {} WHERE flag_id = '{}' AND createdby = {} RETURNING flag_id".format(result,flag_id,createdby)
             self.db.cursor.execute(query)
             _id = self.db.cursor.fetchone()
@@ -96,7 +96,7 @@ class Model:
                       }]
             }
             return message
-        return {'message': 'id doesnt exist in {}'.format(result)}
+        return {'message': 'record either cannot be deleted or it doesnt exist in {}'.format(result)}
     """get one"""
 
     def get_one(self, flag_id, table_name,createdby):

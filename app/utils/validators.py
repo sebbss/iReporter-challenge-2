@@ -2,13 +2,12 @@ from flask import jsonify
 import re
 
 
-def validate_flag_data(description, video, image, location):
+def validate_flag_data(description, location):
     if not description:
         return jsonify({'message':'description cannot be empty'})
     if not location:
         return jsonify({'message':'location cannot be empty'})
-    if not isinstance(video,str) and not isinstance(image,str):
-        return jsonify({'message':'video and image have to be strings'})
+    
 	
 
 def validate_user_strings(firstname, lastname, username, phonenumber):
