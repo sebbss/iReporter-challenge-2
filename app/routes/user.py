@@ -33,14 +33,14 @@ def create_user():
     if not reg:
         return jsonify({'message':'username or email is already taken'}),400
 
-    identity = {'username':data['username'],  'user_id':reg[0]}
+    
     access_token = encode_token(identity)
     return jsonify({
         'status': 201,
         'data': [
                 {
                 'token': access_token.decode('utf-8'),
-                'user': identity
+                
                 }]
             }), 201
 
