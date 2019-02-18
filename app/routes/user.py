@@ -27,20 +27,20 @@ def create_user():
         return jsonify({'message':'password should contain a capital letter, a special character and a number'})
 
     new_user = User(firstname=data['firstname'], lastname=data['lastname'], 
-                    phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,password=data['password'])
+                    phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] , password=data['password'])
 
     reg = new_user.registerUser(data['username'],data['email'])
     if not reg:
         return jsonify({'message':'username or email is already taken'}),400
 
-    
+    identity = {'username':data['username'],'user_id':reg[0]}
     access_token = encode_token(identity)
     return jsonify({
         'status': 201,
         'data': [
                 {
                 'token': access_token.decode('utf-8'),
-                
+                'user':identity
                 }]
             }), 201
 
@@ -64,4 +64,4 @@ def login():
                 'user':identity
                 }]
             }), 200
-    return jsonify({'message': 'invalid credentials'}),401
+    return jsonify({'message': 'invalid credentials'}), 401
