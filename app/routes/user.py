@@ -2,7 +2,7 @@ from flask import request, jsonify
 from app.models.user import User, LoginUser
 from app.app import app
 from validate_email import validate_email
-from app.utils.validators import validate_user_strings , invalid_password, validate_isAdmin
+from app.utils.validators import validate_user_strings , invalid_password
 from app.utils.helpers import encode_token
 from app.models.db import Database
 
@@ -23,27 +23,24 @@ def create_user():
     invalid_data = validate_user_strings(data['firstname'],data['lastname'],data['username'],data['phoneNumber'])
     if invalid_data:
         return invalid_data,400
-    invalid_adminData = validate_isAdmin(data['isAdmin'])
-    if invalid_adminData:
-        return invalid_adminData,400
     if invalid_password(data['password']):
         return jsonify({'message':'password should contain a capital letter, a special character and a number'})
 
     new_user = User(firstname=data['firstname'], lastname=data['lastname'], 
-                    phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,isAdmin=data['isAdmin'], password=data['password'])
+                    phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,password=data['password'])
 
     reg = new_user.registerUser(data['username'],data['email'])
     if not reg:
         return jsonify({'message':'username or email is already taken'}),400
 
-    identity = {'username':data['username'],'user_id':reg[0],'isAdmin':data['isAdmin']}
+    identity = {'username':data['username'],  'user_id':reg[0]}
     access_token = encode_token(identity)
     return jsonify({
         'status': 201,
         'data': [
                 {
                 'token': access_token.decode('utf-8'),
-                'user':identity
+                'user': identity
                 }]
             }), 201
 
@@ -60,11 +57,11 @@ def login():
     if identity:
         access_token = encode_token(identity)
         return jsonify({
-        'status': 201,
+        'status': 200,
         'data': [
                 {
                 'token': access_token.decode('utf-8'),
                 'user':identity
                 }]
-            }), 201
-    return jsonify({'message': 'invalid credentials'}), 401
+            }), 200
+    return jsonify({'message': 'invalid credentials'}),401
