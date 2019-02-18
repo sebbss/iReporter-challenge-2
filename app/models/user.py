@@ -3,14 +3,13 @@ from .db import Database
 from flask import jsonify
 
 class User:
-	def __init__(self, firstname, lastname, phoneNumber,email, username, isAdmin, password):
+	def __init__(self, firstname, lastname, phoneNumber,email, username, password):
 		self.db = Database()
 		
 		self.firstname = firstname
 		self.lastname = lastname
 		self.phoneNumber = phoneNumber
 		self.username = username 
-		self.isAdmin = isAdmin
 		self.email = email
 		self.password =password
 
@@ -21,7 +20,7 @@ class User:
 		resp_email = self.find_user_by_email(email)
 		if resp_email or resp_username:
 			return None
-		query = "INSERT INTO users (username, password, isAdmin,email,firstname, lastname, phoneNumber) VALUES ('{}', '{}', '{}', '{}', '{}','{}', '{}') RETURNING user_id".format(self.username, self.password, self.isAdmin,self.email,self.firstname, self.lastname, self.phoneNumber)
+		query = "INSERT INTO users (username, password, isAdmin,email,firstname, lastname, phoneNumber) VALUES ('{}', '{}', '{}', '{}','{}', '{}') RETURNING user_id".format(self.username, self.password, self.email,self.firstname, self.lastname, self.phoneNumber)
 		self.db.cursor.execute(query)
 		res = self.db.cursor.fetchone()
 		return res
