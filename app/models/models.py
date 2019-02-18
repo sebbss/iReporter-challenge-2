@@ -4,10 +4,10 @@ class Model:
     def __init__(self):
         self.db = Database()
 
-    def createFlag(self, location, description, image, video, createdby, table_name):
+    def createFlag(self, location, description, createdby, table_name):
         result = self.remove_quots(table_name)
-       	query = "INSERT INTO {} (location, description, image,video,createdby) VALUES ('{}','{}','{}','{}','{}') RETURNING flag_id".format(result,
-            location, description, image, video, createdby)
+       	query = "INSERT INTO {} (location, description,createdby) VALUES ('{}','{}','{}') RETURNING flag_id".format(result,
+            location, description, createdby)
         self.db.cursor.execute(query)
         res = self.db.cursor.fetchone()
         message = {

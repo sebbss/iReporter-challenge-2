@@ -16,16 +16,14 @@ def create_incident(current_user):
 	flag_data = request.get_json()
 	location = flag_data['location']
 	description = flag_data['description']
-	video = flag_data['video']
-	image = flag_data['image']
 	res = validate_flag_data(description,location)
 	if res:
 		return res, 400
 	if request.endpoint=='intervention':
-		result = incident.createFlag(location,description,image,video,createdby,"interventions") 
+		result = incident.createFlag(location,description,createdby,"interventions") 
 		return jsonify(result),201
 	elif request.endpoint=='red_flag':
-		result = incident.createFlag(location,description,image,video,createdby,"red_flags") 
+		result = incident.createFlag(location,description,createdby,"red_flags") 
 		return jsonify(result),201
 	return jsonify ({'message':'url is invalid'}),400
 
