@@ -50,5 +50,5 @@ class LoginUser:
 		user = self.db.cursor.fetchone()
 		print(user)
 		if user:
-			return {'usename':user[1], 'user_id':user[0],'isAdmin':user[3]}
+			return {'usename':user[1], 'user_id':user[0],'isAdmin':user[3],'registered':user[8].__str__()}
 		return None
