@@ -6,8 +6,7 @@ import os
 class Database():
   def __init__(self):
     try:
-      self.connection = psycopg2.connect(host='ec2-54-243-228-140.compute-1.amazonaws.com',dbname='d2eg547osc7qba', user= 'yjmgnkxskjgtxq',
-      port= '5432', password = 'c65eac3c3e2287ed936cc189df6613fb9d3157b3f224cc5161efea7d59ecab07')
+      self.connection = psycopg2.connect(postgres://ofofegbhyomwqt:e1052ed7fcb1dc4ddf9bb853143b29c6da0ef2bfb98bea048bbba17a971cd3de@ec2-54-227-251-33.compute-1.amazonaws.com:5432/d8m0mppbbuaqlb)
         
       self.connection.autocommit = True
       self.cursor = self.connection.cursor()
