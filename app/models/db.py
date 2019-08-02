@@ -6,8 +6,14 @@ import os
 class Database():
   def __init__(self):
     try:
-      self.connection = psycopg2.connect(postgres://ofofegbhyomwqt:e1052ed7fcb1dc4ddf9bb853143b29c6da0ef2bfb98bea048bbba17a971cd3de@ec2-54-227-251-33.compute-1.amazonaws.com:5432/d8m0mppbbuaqlb)
-        
+      if os.getenv('DB_NAME') == 'postgres':
+        self.db = 'postgres'
+        self.connection = psycopg2.connect(dbname=self.db, user= 'sebbss', host='localhost',port= '5432')
+        print ('yeah')
+      else:
+        self.connection = psycopg2.connect(dbname='d8m0mppbbuaqlb', user= 'ofofegbhyomwqt', host='ec2-54-227-251-33.compute-1.amazonaws.com',port= '5432',password='e1052ed7fcb1dc4ddf9bb853143b29c6da0ef2bfb98bea048bbba17a971cd3de')
+        print('cinnectrg')
+      
       self.connection.autocommit = True
       self.cursor = self.connection.cursor()
 
