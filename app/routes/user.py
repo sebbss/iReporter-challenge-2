@@ -27,7 +27,7 @@ def create_user():
     if invalid_adminData:
         return invalid_adminData,400
     if invalid_password(data['password']):
-        return jsonify({'message':'password should contain a capital letter, a special character and a number'})
+        return jsonify({'message':'password should contain a capital letter, a special character and a number'}), 400
 
     new_user = User(firstname=data['firstname'], lastname=data['lastname'], 
                     phoneNumber=data['phoneNumber'], username=data['username'],email = data['email'] ,isAdmin=data['isAdmin'], password=data['password'])
